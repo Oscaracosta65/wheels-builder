@@ -1,0 +1,1019 @@
+{source}
+
+{loadmoduleid 126}
+[[div class="le-wheel-engine"]]
+
+[[style]]
+/* LottoExpert Wheel Builder Engine (scoped, Helix-safe, WCAG AA, mobile-first) */
+.le-wheel-engine{
+  --skai-blue:#1C66FF;
+  --deep-navy:#0A1A33;
+  --sky-gray:#EFEFF5;
+  --text:#0A1A33;
+  --text-muted:#5B6B86;
+  --border:rgba(10,26,51,.12);
+  --border-strong:rgba(10,26,51,.18);
+  --card:#FFFFFF;
+  --shadow-md: 0 10px 30px rgba(10,26,51,.10);
+  --r12:12px;
+  --r16:16px;
+  --r20:20px;
+  --s8:8px;
+  --s12:12px;
+  --s16:16px;
+  --s24:24px;
+  max-width:1100px;
+  margin:0 auto;
+  padding:var(--s24);
+  border-radius:var(--r20);
+  background: linear-gradient(180deg, var(--sky-gray) 0%, #FFFFFF 100%);
+  color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+.le-wheel-engine *{ box-sizing:border-box; }
+.le-wheel-engine :focus{ outline:none; }
+.le-wheel-engine :focus-visible{ outline:3px solid rgba(28,102,255,.35); outline-offset:3px; }
+.le-wheel-engine a{ color:var(--skai-blue); text-decoration:none; }
+.le-wheel-engine a:hover{ text-decoration:underline; }
+
+.le-hero{
+  border-radius:var(--r20);
+  padding:var(--s24);
+  background:linear-gradient(135deg, var(--deep-navy) 0%, var(--skai-blue) 100%);
+  color:#fff;
+  box-shadow:var(--shadow-md);
+}
+.le-hero h1{ margin:0 0 6px; font-size:24px; line-height:1.2; color:#fff !important; }
+.le-hero p{ margin:0; color:rgba(255,255,255,.92) !important; line-height:1.45; max-width:80ch; }
+
+.le-grid{ display:grid; grid-template-columns:1fr; gap:var(--s16); margin-top:var(--s16); min-width:0; }
+@media (min-width:980px){ .le-grid{ grid-template-columns:420px 1fr; align-items:start; } }
+
+.le-card{
+  border:1px solid var(--border);
+  border-radius:var(--r20);
+  background:var(--card);
+  padding:18px;
+  box-shadow:var(--shadow-md);
+}
+.le-label{ font-size:12px; color:rgba(10,26,51,.72); font-weight:800; letter-spacing:.2px; margin-bottom:6px; }
+.le-help{ font-size:13px; color:var(--text-muted); line-height:1.55; }
+.le-muted{ color:var(--text-muted); font-size:12px; }
+
+.le-row{ display:flex; gap:var(--s12); flex-wrap:wrap; align-items:flex-end; }
+.le-input,.le-select,textarea{
+  border:1px solid var(--border-strong);
+  border-radius:var(--r12);
+  padding:10px 12px;
+  font-size:14px;
+  background:#fff;
+  color:var(--text);
+  min-height:42px;
+  width:100%;
+}
+textarea{ min-height:92px; resize:vertical; }
+.le-input:focus,.le-select:focus,textarea:focus{
+  border-color:var(--skai-blue);
+  box-shadow:0 0 0 4px rgba(28,102,255,.18);
+}
+
+.le-btn{
+  appearance:none;
+  border:0;
+  border-radius:14px;
+  padding:10px 16px;
+  font-weight:900;
+  cursor:pointer;
+  background:var(--skai-blue);
+  color:#fff;
+  min-height:42px;
+  box-shadow:0 10px 22px rgba(28,102,255,.22);
+  transition:transform .12s ease, filter .12s ease, background-color .12s ease, color .12s ease;
+}
+.le-btn:hover{ filter:brightness(1.03); transform:translateY(-1px); }
+.le-btn:active{ transform:translateY(0); }
+.le-btn.secondary{ background:var(--deep-navy); box-shadow:0 10px 22px rgba(10,26,51,.18); }
+.le-btn.ghost{ background:#fff; border:1px solid rgba(28,102,255,.55); color:var(--skai-blue); box-shadow:none; }
+.le-btn.ghost:hover{ background:rgba(28,102,255,.06); }
+.le-btn.success{
+  background:#20C997 !important;
+  color:#FFFFFF !important;
+  border-color:#20C997 !important;
+  box-shadow:0 10px 22px rgba(32,201,151,.22) !important;
+}
+.le-btn:focus{ outline:4px solid rgba(28,102,255,.20); outline-offset:2px; }
+
+.le-status{
+  display:flex;
+  gap:var(--s12);
+  align-items:flex-start;
+  margin-top:var(--s12);
+  padding:12px 14px;
+  border-radius:var(--r16);
+  border:1px solid var(--border);
+  background:rgba(239,239,245,.6);
+  color:var(--deep-navy);
+  font-size:13px;
+}
+.le-dot{
+  width:10px; height:10px; border-radius:999px;
+  background:rgba(127,141,170,.9);
+  box-shadow:0 0 0 4px rgba(127,141,170,.14);
+  margin-top:4px;
+}
+.le-dot.ok{ background:#20C997; box-shadow:0 0 0 4px rgba(32,201,151,.16); }
+.le-dot.err{ background:#EF4444; box-shadow:0 0 0 4px rgba(239,68,68,.18); }
+
+.le-chips{
+  display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; padding:10px 12px;
+  border-radius:999px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(8px);
+}
+.le-chip{
+  background:rgba(10,26,51,.35);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:6px 10px;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.15px;
+}
+.le-chip span{ color:rgba(255,255,255,.95); }
+
+.le-number-grid{
+  display:grid;
+  grid-template-columns:repeat(10, minmax(0, 1fr));
+  gap:var(--s8);
+  margin-top:10px;
+  width:100%;
+  max-width:100%;
+}
+@media (max-width:520px){ .le-number-grid{ grid-template-columns:repeat(6, minmax(0, 1fr)); } }
+@media (max-width:380px){ .le-number-grid{ grid-template-columns:repeat(5, minmax(0, 1fr)); } }
+
+.le-num{
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--border-strong); border-radius:var(--r12);
+  padding:10px 0; background:#fff; cursor:pointer; user-select:none; font-weight:900; color:var(--deep-navy); min-width:0;
+}
+.le-num[aria-pressed="true"]{
+  background:rgba(245,166,35,.10);
+  border-color:rgba(245,166,35,.65);
+  box-shadow:0 0 0 4px rgba(245,166,35,.14);
+}
+.le-num:focus{ box-shadow:0 0 0 4px rgba(28,102,255,.18); }
+
+.le-results{
+  max-height:560px;
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:var(--r16);
+  background:#fff;
+}
+.le-coverage{
+  margin-top:12px;
+  border:1px solid var(--border);
+  border-radius:var(--r16);
+  background:rgba(239,239,245,.55);
+  padding:12px 14px;
+}
+.le-coverage h3{ margin:0 0 8px; font-size:13px; font-weight:900; color:var(--deep-navy); letter-spacing:.2px; }
+.le-coverage .le-cov-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:980px){ .le-coverage .le-cov-grid{ grid-template-columns:1fr 1fr; } }
+.le-cov-kpi{ border:1px solid rgba(10,26,51,.10); border-radius:14px; background:#fff; padding:10px 12px; }
+.le-cov-kpi .k{ font-size:12px; font-weight:900; color:rgba(10,26,51,.75); margin-bottom:6px; }
+.le-cov-kpi .v{ font-size:13px; font-weight:900; color:var(--deep-navy); }
+.le-cov-bars{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+.le-cov-row{ display:flex; align-items:center; gap:10px; }
+.le-cov-tag{ width:44px; font-weight:900; font-size:12px; color:var(--deep-navy); }
+.le-cov-bar{ flex:1; height:10px; border-radius:999px; background:rgba(10,26,51,.08); overflow:hidden; border:1px solid rgba(10,26,51,.08); }
+.le-cov-bar > span{ display:block; height:100%; width:0%; background:rgba(28,102,255,.55); }
+.le-cov-val{ width:56px; text-align:right; font-size:12px; font-weight:900; color:rgba(10,26,51,.72); }
+.le-cov-small{ font-size:12px; color:rgba(10,26,51,.70); line-height:1.45; margin-top:8px; }
+
+.le-table{ width:100%; border-collapse:separate; border-spacing:0; font-size:14px; }
+.le-table th,.le-table td{ padding:12px 12px; border-bottom:1px solid rgba(10,26,51,.08); vertical-align:middle; }
+.le-table th{ position:sticky; top:0; background:#fff; z-index:1; text-align:left; font-weight:900; color:var(--deep-navy); }
+.le-table td:last-child{ text-align:right; }
+
+.le-print-header{ display:none; }
+
+/* Print isolation */
+@media print{
+  html, body{
+    background:#fff !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  body *{ visibility:hidden !important; }
+  .le-wheel-engine, .le-wheel-engine *{ visibility:visible !important; }
+
+  .le-wheel-engine{
+    position:absolute !important;
+    left:0 !important;
+    top:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    background:#fff !important;
+    box-shadow:none !important;
+    border-radius:0 !important;
+    z-index:999999 !important;
+  }
+  .le-grid{ display:block !important; margin-top:12px !important; }
+  .le-grid > .le-card:first-child{ display:none !important; }
+
+  .le-hero,
+  .le-grid > .le-card:last-child,
+  .le-results,
+  .le-coverage{
+    box-shadow:none !important;
+    border:1px solid #ccc !important;
+    background:#fff !important;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .le-hero{ margin:0 0 12px !important; padding:16px !important; }
+  .le-grid > .le-card:last-child{ margin:0 !important; padding:16px !important; }
+
+  .le-print-header{
+    display:block !important;
+    margin:0 0 16px !important;
+    padding:0 0 12px !important;
+    border-bottom:1px solid #ccc !important;
+  }
+
+  .le-label, .le-help{ color:#000 !important; }
+
+  .le-results{ max-height:none !important; overflow:visible !important; margin-top:12px !important; }
+  .le-table{ width:100% !important; border-collapse:collapse !important; }
+  .le-table thead{ display:table-header-group !important; }
+  .le-table tbody{ display:table-row-group !important; }
+  .le-table tr{ display:table-row !important; }
+  .le-table th, .le-table td{
+    display:table-cell !important;
+    color:#000 !important;
+    background:#fff !important;
+    border:1px solid #ccc !important;
+    padding:8px 10px !important;
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+  }
+  .le-table th{ position:static !important; }
+}
+
+@media (prefers-reduced-motion: reduce){ .le-btn, .le-input, .le-select{ transition:none !important; } }
+[[/style]]
+
+[[div class="le-hero"]]
+  [[h1 id="leTitle"]]Wheel Builder[[/h1]]
+  [[p id="leLead"]]Loading wheel system… This tool runs on LottoExpert.net. Coverage diagnostics help you understand distribution, not promise outcomes.[[/p]]
+  [[div class="le-chips" aria-label="Wheel spec"]]
+    [[span class="le-chip"]]System: [[span id="leSystemId"]]-[[/span]][[/span]]
+    [[span class="le-chip"]]Pick: [[span id="lePick"]]-[[/span]][[/span]]
+    [[span class="le-chip"]]Pool: [[span id="lePool"]]-[[/span]][[/span]]
+    [[span class="le-chip"]]Assurance: [[span id="leAssurance"]]-[[/span]][[/span]]
+    [[span class="le-chip"]]Lines: [[span id="leLines"]]-[[/span]][[/span]]
+  [[/div]]
+[[/div]]
+
+[[div class="le-grid"]]
+  [[div class="le-card"]]
+    [[div class="le-label"]]Step 1: Load or select your pool[[/div]]
+    [[div class="le-help"]]Choose exactly the required pool size for this wheel. You can either select manually, paste a list, or import from MyLottoExpert when that connection is wired.[[/div]]
+
+    [[div class="le-status" role="status" aria-live="polite"]]
+      [[span class="le-dot" id="leDot" aria-hidden="true"]][[/span]]
+      [[div id="leStatusText"]]Preparing…[[/div]]
+    [[/div]]
+
+    [[div class="le-row" style="margin-top:12px"]]
+      [[div style="flex:1 1 180px"]]
+        [[div class="le-label"]][[label for="leMax"]]Highest Lotto Number[[/label]][[/div]]
+        [[select id="leMax" class="le-select"]][[/select]]
+        [[div class="le-muted"]]Limits the grid display (example: Powerball highest main is 69).[[/div]]
+      [[/div]]
+
+      [[div style="flex:1 1 160px"]]
+        [[div class="le-label"]][[label for="leIncludeZero"]]Include 0[[/label]][[/div]]
+        [[select id="leIncludeZero" class="le-select"]]
+          [[option value="0"]]No[[/option]]
+          [[option value="1"]]Yes (daily games only)[[/option]]
+        [[/select]]
+        [[div class="le-muted"]]Only enable 0 when your game range includes 0 (daily games).[[/div]]
+      [[/div]]
+    [[/div]]
+
+    [[div class="le-row" style="margin-top:12px"]]
+      [[button id="leImportBtn" class="le-btn secondary" type="button"]]Import from MyLottoExpert[[/button]]
+      [[button id="leRandomBtn" class="le-btn ghost" type="button"]]Random Select[[/button]]
+      [[button id="leResetBtn" class="le-btn ghost" type="button"]]Reset Selection[[/button]]
+    [[/div]]
+
+    [[div style="margin-top:12px"]]
+      [[div class="le-label"]]Selected Numbers ([[span id="leCount"]]0[[/span]])[[/div]]
+      [[textarea id="leSelected" aria-readonly="true" readonly]][[/textarea]]
+      [[div class="le-muted"]]You must select exactly [[span id="leReq"]]-[[/span]] numbers for this wheel to generate combinations.[[/div]]
+    [[/div]]
+
+    [[div id="leGrid" class="le-number-grid" role="group" aria-label="Number selection grid"]][[/div]]
+
+    [[div class="le-row" style="margin-top:12px"]]
+      [[button id="leCreateBtn" class="le-btn" type="button" disabled]]Create Wheel[[/button]]
+      [[button id="leDownloadBtn" class="le-btn ghost" type="button" disabled]]Download (.txt)[[/button]]
+      [[button id="leCopyBtn" class="le-btn ghost" type="button" disabled]]Copy Wheel[[/button]]
+      [[button id="lePrintBtn" class="le-btn ghost" type="button" disabled]]Print Wheel[[/button]]
+    [[/div]]
+  [[/div]]
+
+  [[div class="le-card" id="leOutputCard"]]
+    [[div class="le-print-header"]]
+      [[h2 style="margin:0 0 8px; font-size:22px; color:#0A1A33;"]]LottoExpert Wheel Output[[/h2]]
+      [[div style="font-size:14px; color:#0A1A33; line-height:1.5;"]]
+        System: [[span id="lePrintSystemId"]]-[[/span]] |
+        Pick: [[span id="lePrintPick"]]-[[/span]] |
+        Pool: [[span id="lePrintPool"]]-[[/span]] |
+        Assurance: [[span id="lePrintAssurance"]]-[[/span]] |
+        Lines: [[span id="lePrintLines"]]-[[/span]]
+      [[/div]]
+      [[div style="font-size:13px; color:#5B6B86; margin-top:6px;"]]Generated from LottoExpert.net wheel builder.[[/div]]
+    [[/div]]
+
+    [[div class="le-label"]]Step 2: Wheel output[[/div]]
+    [[div class="le-help"]]Your generated combinations will appear here. Scrolling is enabled for long wheels.[[/div]]
+
+    [[div id="leCoverage" class="le-coverage" aria-label="Coverage diagnostics"]][[/div]]
+
+    [[div class="le-results" role="region" aria-label="Wheel combinations"]]
+      [[table class="le-table" id="leOutTable"]]
+        [[thead]]
+          [[tr]]
+            [[th]]Line[[/th]]
+            [[th]]Combination[[/th]]
+          [[/tr]]
+        [[/thead]]
+        [[tbody]][[/tbody]]
+      [[/table]]
+    [[/div]]
+  [[/div]]
+[[/div]]
+[[/div]]
+
+[[script]]
+(function(){
+'use strict';
+
+var WHEELS_JSON_URL = '/media/lottoexpert/wheels/wheels.json?v=' + Date.now();
+var HUB_URL = '/all-wheeling-systems';
+
+var dom = {
+  title: document.getElementById('leTitle'),
+  lead: document.getElementById('leLead'),
+  sys: document.getElementById('leSystemId'),
+  pick: document.getElementById('lePick'),
+  pool: document.getElementById('lePool'),
+  assurance: document.getElementById('leAssurance'),
+  lines: document.getElementById('leLines'),
+  dot: document.getElementById('leDot'),
+  status: document.getElementById('leStatusText'),
+  maxSel: document.getElementById('leMax'),
+  zeroSel: document.getElementById('leIncludeZero'),
+  importBtn: document.getElementById('leImportBtn'),
+  randomBtn: document.getElementById('leRandomBtn'),
+  resetBtn: document.getElementById('leResetBtn'),
+  createBtn: document.getElementById('leCreateBtn'),
+  downloadBtn: document.getElementById('leDownloadBtn'),
+  copyBtn: document.getElementById('leCopyBtn'),
+  printBtn: document.getElementById('lePrintBtn'),
+  count: document.getElementById('leCount'),
+  req: document.getElementById('leReq'),
+  selected: document.getElementById('leSelected'),
+  grid: document.getElementById('leGrid'),
+  outBody: document.getElementById('leOutTable').getElementsByTagName('tbody')[0],
+  printSystemId: document.getElementById('lePrintSystemId'),
+  printPick: document.getElementById('lePrintPick'),
+  printPool: document.getElementById('lePrintPool'),
+  printAssurance: document.getElementById('lePrintAssurance'),
+  printLines: document.getElementById('lePrintLines')
+};
+
+var systemId = null;
+var wheel = null;
+var selected = [];
+var maxNum = 99;
+var includeZero = false;
+var builtLines = [];
+var builtCombos = [];
+var copyResetTimer = null;
+
+function qs(name){
+  try{
+    var u = new URL(window.location.href);
+    return u.searchParams.get(name);
+  }catch(e){
+    var m = (window.location.search || '').match(new RegExp('[?&]' + name + '=([^&]+)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+}
+
+function setStatus(kind, msg){
+  if (dom.status) { dom.status.textContent = msg; }
+  if (dom.dot){
+    dom.dot.classList.remove('ok','err');
+    if (kind === 'ok') { dom.dot.classList.add('ok'); }
+    if (kind === 'err') { dom.dot.classList.add('err'); }
+  }
+}
+
+function flashCopiedState(){
+  if (!dom.copyBtn) { return; }
+  if (copyResetTimer) { clearTimeout(copyResetTimer); copyResetTimer = null; }
+  dom.copyBtn.textContent = 'Copied!';
+  dom.copyBtn.classList.add('success');
+  copyResetTimer = setTimeout(function(){
+    if (dom.copyBtn) {
+      dom.copyBtn.textContent = 'Copy Wheel';
+      dom.copyBtn.classList.remove('success');
+    }
+  }, 1800);
+}
+
+function pad2(n){
+  n = parseInt(n,10) || 0;
+  return n < 10 ? ('0' + n) : String(n);
+}
+
+function setMetaTag(name, content){
+  var el = document.querySelector('meta[name="' + name + '"]');
+  if (!el){
+    el = document.createElement('meta');
+    el.setAttribute('name', name);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+}
+function setCanonical(url){
+  var link = document.querySelector('link[rel="canonical"]');
+  if (!link){
+    link = document.createElement('link');
+    link.setAttribute('rel', 'canonical');
+    document.head.appendChild(link);
+  }
+  link.setAttribute('href', url);
+}
+function applyBuilderSeo(titleText, descriptionText){
+  document.title = titleText;
+  setMetaTag('description', descriptionText);
+  setMetaTag('robots', 'noindex,follow');
+  setCanonical(HUB_URL);
+}
+
+function syncPrintHeader(){
+  if (dom.printSystemId) { dom.printSystemId.textContent = dom.sys ? dom.sys.textContent : '-'; }
+  if (dom.printPick) { dom.printPick.textContent = dom.pick ? dom.pick.textContent : '-'; }
+  if (dom.printPool) { dom.printPool.textContent = dom.pool ? dom.pool.textContent : '-'; }
+  if (dom.printAssurance) { dom.printAssurance.textContent = dom.assurance ? dom.assurance.textContent : '-'; }
+  if (dom.printLines) { dom.printLines.textContent = dom.lines ? dom.lines.textContent : '-'; }
+}
+
+function renderMaxDropdown(){
+  if (!dom.maxSel) { return; }
+  dom.maxSel.innerHTML = '';
+  var opt0 = document.createElement('option');
+  opt0.value = '0';
+  opt0.textContent = '-- Select Highest --';
+  dom.maxSel.appendChild(opt0);
+  for (var i = 1; i <= 99; i++){
+    var o = document.createElement('option');
+    o.value = String(i);
+    o.textContent = String(i);
+    dom.maxSel.appendChild(o);
+  }
+  dom.maxSel.value = String(maxNum);
+}
+
+function renderGrid(){
+  if (!dom.grid) { return; }
+  dom.grid.innerHTML = '';
+  var start = includeZero ? 0 : 1;
+  var end = maxNum;
+
+  for (var i = start; i <= end; i++){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'le-num';
+    btn.setAttribute('data-v', pad2(i));
+    btn.setAttribute('aria-pressed', 'false');
+    btn.textContent = pad2(i);
+    btn.addEventListener('click', onPick);
+    dom.grid.appendChild(btn);
+  }
+  syncGridPressed();
+}
+
+function syncGridPressed(){
+  var nodes = dom.grid ? dom.grid.querySelectorAll('.le-num') : [];
+  for (var i = 0; i < nodes.length; i++){
+    var v = nodes[i].getAttribute('data-v');
+    var on = selected.indexOf(v) !== -1;
+    nodes[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+}
+
+function updateSelectionUI(){
+  var req = wheel ? (parseInt(wheel.requiredSelections,10) || 0) : 0;
+  var hasBuilt = !!(builtLines && builtLines.length > 0);
+
+  if (dom.count) { dom.count.textContent = String(selected.length); }
+  if (dom.selected) { dom.selected.value = selected.join(' - '); }
+  if (dom.createBtn) { dom.createBtn.disabled = !(req > 0 && selected.length === req); }
+  if (dom.downloadBtn) { dom.downloadBtn.disabled = !hasBuilt; }
+  if (dom.copyBtn) { dom.copyBtn.disabled = !hasBuilt; }
+  if (dom.printBtn) { dom.printBtn.disabled = !hasBuilt; }
+}
+
+function onPick(e){
+  if (!wheel) { return; }
+
+  var v = e.currentTarget.getAttribute('data-v');
+  var req = parseInt(wheel.requiredSelections,10) || 0;
+  var idx = selected.indexOf(v);
+
+  if (idx === -1){
+    if (selected.length >= req){
+      setStatus('err', 'You already selected the required ' + req + ' numbers.');
+      return;
+    }
+    selected.push(v);
+  } else {
+    selected.splice(idx, 1);
+  }
+
+  syncGridPressed();
+  updateSelectionUI();
+  setStatus('ok', 'Selected ' + selected.length + ' of ' + req + '.');
+}
+
+function resetSelection(){
+  var cov = document.getElementById('leCoverage');
+  selected = [];
+  builtLines = [];
+  builtCombos = [];
+  if (dom.outBody) { dom.outBody.innerHTML = ''; }
+  if (cov) { cov.innerHTML = ''; }
+  syncGridPressed();
+  updateSelectionUI();
+  setStatus('ok', 'Selection reset.');
+}
+
+function randomSelect(){
+  if (!wheel) { return; }
+  resetSelection();
+
+  var req = parseInt(wheel.requiredSelections,10) || 0;
+  var pool = [];
+  var start = includeZero ? 0 : 1;
+
+  for (var i = start; i <= maxNum; i++){ pool.push(pad2(i)); }
+
+  for (var j = pool.length - 1; j > 0; j--){
+    var k = Math.floor(Math.random() * (j + 1));
+    var tmp = pool[j];
+    pool[j] = pool[k];
+    pool[k] = tmp;
+  }
+
+  selected = pool.slice(0, req);
+  syncGridPressed();
+  updateSelectionUI();
+  setStatus('ok', 'Randomly selected ' + req + ' numbers.');
+}
+
+function createWheel(){
+  if (!wheel) { return; }
+
+  var req = parseInt(wheel.requiredSelections, 10) || 0;
+  if (selected.length !== req){
+    setStatus('err', 'Select exactly ' + req + ' numbers first.');
+    return;
+  }
+
+  var lines = (wheel.wheelLines && Array.isArray(wheel.wheelLines)) ? wheel.wheelLines :
+              (wheel.lines && Array.isArray(wheel.lines)) ? wheel.lines : [];
+
+  if (!lines.length){
+    setStatus('err', 'This wheel system has no line template. Verify wheels.json contains "wheelLines" or "lines" for system ' + (systemId || '') + '.');
+    return;
+  }
+
+  builtLines = [];
+  builtCombos = [];
+
+  for (var i = 0; i < lines.length; i++){
+    var idxs = lines[i];
+    if (!idxs || !idxs.length || !Array.isArray(idxs)) { continue; }
+
+    var vals = [];
+    for (var j = 0; j < idxs.length; j++){
+      var n = parseInt(idxs[j], 10) || 0;
+      if (n <= 0) { continue; }
+      var v = selected[n - 1];
+      if (typeof v === 'string' && v) { vals.push(v); }
+    }
+
+    var pick = parseInt(wheel.pick, 10) || parseInt(wheel.pickSize, 10) || 0;
+    if (pick > 0 && vals.length !== pick) { continue; }
+
+    builtCombos.push(vals);
+    builtLines.push(vals.join(' - '));
+  }
+
+  if (!builtLines.length){
+    setStatus('err', 'No valid combinations could be generated. This usually means the line template indices do not match the selected pool size.');
+    if (dom.outBody) { dom.outBody.innerHTML = ''; }
+    updateSelectionUI();
+    return;
+  }
+
+  if (dom.outBody){
+    dom.outBody.innerHTML = '';
+    for (var r = 0; r < builtLines.length; r++){
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td');
+      var td2 = document.createElement('td');
+      td1.textContent = String(r + 1);
+      td2.textContent = builtLines[r];
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      dom.outBody.appendChild(tr);
+    }
+  }
+
+  try { renderCoverageDiagnostics(); } catch (e) {}
+
+  updateSelectionUI();
+  syncPrintHeader();
+  setStatus('ok', 'Wheel created: ' + builtLines.length + ' lines.');
+}
+
+function renderCoverageDiagnostics(){
+  var cov = document.getElementById('leCoverage');
+  if (!cov) { return; }
+  if (!wheel || !builtCombos || !builtCombos.length){ cov.innerHTML = ''; return; }
+
+  var freq = {};
+  var pairFreq = {};
+  var totalPairsPossible = 0;
+
+  for (var i = 0; i < selected.length; i++){ freq[selected[i]] = 0; }
+  if (selected.length >= 2){ totalPairsPossible = (selected.length * (selected.length - 1)) / 2; }
+
+  for (var r = 0; r < builtCombos.length; r++){
+    var line = builtCombos[r] || [];
+
+    for (var a = 0; a < line.length; a++){
+      var v = line[a];
+      if (freq[v] == null) { freq[v] = 0; }
+      freq[v] += 1;
+    }
+
+    for (var x = 0; x < line.length; x++){
+      for (var y = x + 1; y < line.length; y++){
+        var p1 = line[x];
+        var p2 = line[y];
+        var key = (p1 < p2) ? (p1 + '|' + p2) : (p2 + '|' + p1);
+        if (!pairFreq[key]) { pairFreq[key] = 0; }
+        pairFreq[key] += 1;
+      }
+    }
+  }
+
+  var maxF = 0, minF = 999999, sumF = 0;
+  for (var k in freq){
+    if (!Object.prototype.hasOwnProperty.call(freq, k)) { continue; }
+    var f = freq[k] || 0;
+    if (f > maxF) { maxF = f; }
+    if (f < minF) { minF = f; }
+    sumF += f;
+  }
+
+  var keys = Object.keys(freq);
+  var avgF = (keys.length > 0) ? (sumF / keys.length) : 0;
+  var pairsCovered = Object.keys(pairFreq).length;
+  var pairCoveragePct = (totalPairsPossible > 0) ? Math.round((pairsCovered / totalPairsPossible) * 100) : 0;
+
+  var pairList = [];
+  for (var pk in pairFreq){
+    if (!Object.prototype.hasOwnProperty.call(pairFreq, pk)) { continue; }
+    pairList.push({ key: pk, count: pairFreq[pk] });
+  }
+  pairList.sort(function(a1, b1){ return a1.count - b1.count; });
+  var under = pairList.slice(0, 10);
+
+  var LT = String.fromCharCode(60);
+  var GT = String.fromCharCode(62);
+  var html = '';
+
+  html += LT + 'h3' + GT + 'Coverage Diagnostics' + LT + '/h3' + GT;
+  html += LT + 'div class="le-cov-grid"' + GT;
+  html += LT + 'div class="le-cov-kpi"' + GT;
+  html += LT + 'div class="k"' + GT + 'Single-number coverage' + LT + '/div' + GT;
+  html += LT + 'div class="v"' + GT + 'Min ' + minF + ' | Avg ' + avgF.toFixed(1) + ' | Max ' + maxF + LT + '/div' + GT;
+  html += LT + '/div' + GT;
+  html += LT + 'div class="le-cov-kpi"' + GT;
+  html += LT + 'div class="k"' + GT + 'Pair coverage' + LT + '/div' + GT;
+  html += LT + 'div class="v"' + GT + pairsCovered + ' / ' + totalPairsPossible + ' pairs (' + pairCoveragePct + '%)' + LT + '/div' + GT;
+  html += LT + '/div' + GT;
+  html += LT + '/div' + GT;
+
+  var show = selected.slice(0, 20);
+  html += LT + 'div class="le-cov-bars"' + GT;
+  for (var i2 = 0; i2 < show.length; i2++){
+    var num = show[i2];
+    var f2 = freq[num] || 0;
+    var pct = (maxF > 0) ? Math.round((f2 / maxF) * 100) : 0;
+
+    html += LT + 'div class="le-cov-row"' + GT;
+    html += LT + 'div class="le-cov-tag"' + GT + num + LT + '/div' + GT;
+    html += LT + 'div class="le-cov-bar"' + GT + LT + 'span style="width:' + pct + '%"' + GT + LT + '/span' + GT + LT + '/div' + GT;
+    html += LT + 'div class="le-cov-val"' + GT + f2 + LT + '/div' + GT;
+    html += LT + '/div' + GT;
+  }
+  html += LT + '/div' + GT;
+
+  if (under.length){
+    html += LT + 'div class="le-cov-small"' + GT + LT + 'strong' + GT + 'Least-covered pairs' + LT + '/strong' + GT + ' (lowest appearances across lines):' + LT + 'br' + GT;
+    for (var u = 0; u < under.length; u++){
+      var parts = under[u].key.split('|');
+      html += parts[0] + '–' + parts[1] + ' (' + under[u].count + ')' + (u < under.length - 1 ? ', ' : '');
+    }
+    html += LT + '/div' + GT;
+  }
+
+  html += LT + 'div class="le-cov-small"' + GT +
+          'SKAI-style note: These diagnostics summarize how evenly your wheel distributes coverage across your selected pool. ' +
+          'This describes structure and balance; it does not guarantee results.' +
+          LT + '/div' + GT;
+
+  cov.innerHTML = html;
+}
+
+function downloadTxt(){
+  if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before downloading.'); return; }
+  var txt = builtLines.join('\r\n') + '\r\n';
+  var blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (systemId ? systemId : 'wheel') + '-combinations.txt';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){
+    try{ URL.revokeObjectURL(a.href); }catch(_){}
+    try{ a.parentNode.removeChild(a); }catch(_){}
+  }, 200);
+}
+
+function copyWheel(){
+  if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before copying.'); return; }
+  var txt = builtLines.join('\r\n');
+
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){
+      flashCopiedState();
+      setStatus('ok', 'Wheel copied.');
+    }).catch(function(){ fallbackCopy(txt); });
+  } else {
+    fallbackCopy(txt);
+  }
+}
+function fallbackCopy(txt){
+  try{
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', 'readonly');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+
+    if (document.execCommand('copy')) {
+      flashCopiedState();
+      setStatus('ok', 'Wheel copied.');
+    } else {
+      setStatus('err', 'Copy failed. Please use Download instead.');
+    }
+    document.body.removeChild(ta);
+  }catch(e){
+    setStatus('err', 'Copy failed. Please use Download instead.');
+  }
+}
+
+function printWheel(){
+  if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before printing.'); return; }
+  syncPrintHeader();
+
+  if (window.requestAnimationFrame){
+    window.requestAnimationFrame(function(){
+      window.requestAnimationFrame(function(){
+        setStatus('ok', 'Print dialog opened.');
+        window.print();
+      });
+    });
+  } else {
+    setTimeout(function(){
+      setStatus('ok', 'Print dialog opened.');
+      window.print();
+    }, 120);
+  }
+}
+
+function wireButtons(){
+  if (dom.resetBtn) { dom.resetBtn.addEventListener('click', resetSelection); }
+  if (dom.randomBtn) { dom.randomBtn.addEventListener('click', randomSelect); }
+  if (dom.createBtn) { dom.createBtn.addEventListener('click', createWheel); }
+  if (dom.downloadBtn) { dom.downloadBtn.addEventListener('click', downloadTxt); }
+  if (dom.copyBtn) { dom.copyBtn.addEventListener('click', copyWheel); }
+  if (dom.printBtn) { dom.printBtn.addEventListener('click', printWheel); }
+
+  if (dom.maxSel){
+    dom.maxSel.addEventListener('change', function(){
+      var v = parseInt(dom.maxSel.value,10) || 0;
+      if (v <= 0){ v = 99; }
+      maxNum = v;
+      resetSelection();
+      renderGrid();
+      setStatus('ok', 'Grid limited to 1–' + maxNum + '.');
+    });
+  }
+
+  if (dom.zeroSel){
+    dom.zeroSel.addEventListener('change', function(){
+      includeZero = dom.zeroSel.value === '1';
+      resetSelection();
+      renderGrid();
+      setStatus('ok', includeZero ? '0 enabled (daily games).' : '0 disabled.');
+    });
+  }
+
+  if (dom.importBtn){
+    dom.importBtn.addEventListener('click', function(){
+      setStatus('err', 'Import is not wired yet. Next step is adding a Joomla endpoint to pull your saved prediction pool from MyLottoExpert.');
+    });
+  }
+}
+
+function loadWheelFromJson(sysId){
+  function normalizeWheel(raw){
+    var w = raw || {};
+    var pick = parseInt(w.pick, 10);
+    var required = parseInt(w.requiredSelections, 10);
+    var lines = Array.isArray(w.lines) ? w.lines : (Array.isArray(w.wheelLines) ? w.wheelLines : []);
+    var max = parseInt(w.max, 10);
+    var assuranceN = parseInt(w.assurance, 10);
+    var assuranceLabel;
+    var cc;
+
+    if (isNaN(pick)) { pick = parseInt(w.pickSize, 10); }
+    if (isNaN(pick)) { pick = 5; }
+
+    if (isNaN(required) || required <= 0){
+      if (isNaN(assuranceN)) { assuranceN = 2; }
+      required = pick + assuranceN;
+    }
+
+    if (isNaN(max) || max <= 0) { max = 99; }
+
+    assuranceLabel = (typeof w.assuranceText === 'string' && w.assuranceText.trim()) ?
+      w.assuranceText.trim() :
+      (!isNaN(assuranceN) ? ('Assurance ' + assuranceN) : '-');
+
+    cc = parseInt(w.combinationsCount, 10);
+
+    return {
+      name:(w.name ? String(w.name) : ''),
+      pick:pick,
+      requiredSelections:required,
+      max:max,
+      assuranceLabel:assuranceLabel,
+      lines:lines,
+      combinationsCount:(!isNaN(cc) ? cc : lines.length)
+    };
+  }
+
+  function applyWheel(sysIdLocal, rawWheel){
+    var norm = normalizeWheel(rawWheel);
+    wheel = norm;
+    systemId = sysIdLocal;
+
+    if (dom.sys) { dom.sys.textContent = sysIdLocal; }
+    if (dom.pick) { dom.pick.textContent = String(norm.pick); }
+    if (dom.pool) { dom.pool.textContent = String(norm.requiredSelections); }
+    if (dom.req) { dom.req.textContent = String(norm.requiredSelections); }
+    if (dom.assurance) { dom.assurance.textContent = String(norm.assuranceLabel); }
+    if (dom.lines) { dom.lines.textContent = String(norm.combinationsCount); }
+
+    if (dom.title){ dom.title.textContent = norm.name ? norm.name : ('Wheel Builder • ' + sysIdLocal); }
+    if (dom.lead){ dom.lead.textContent = 'Select exactly ' + norm.requiredSelections + ' numbers, then generate combinations using this wheel’s template.'; }
+
+    var titleText = (norm.name ? norm.name : ('Wheel ' + sysIdLocal)) + ' | Wheel Builder | LottoExpert';
+    var descriptionText = 'Use the LottoExpert wheel builder to generate combinations for system ' + sysIdLocal + '. Select ' + norm.requiredSelections + ' numbers, review coverage diagnostics, copy, print, or download your wheel output.';
+    applyBuilderSeo(titleText, descriptionText);
+
+    maxNum = norm.max;
+    renderMaxDropdown();
+    if (dom.maxSel) { dom.maxSel.value = String(maxNum); }
+    includeZero = false;
+    if (dom.zeroSel) { dom.zeroSel.value = '0'; }
+
+    resetSelection();
+    renderGrid();
+    updateSelectionUI();
+    syncPrintHeader();
+    setStatus('ok', 'Loaded. Select exactly ' + norm.requiredSelections + ' numbers to create your wheel.');
+  }
+
+  function fallbackFetch(){
+    setStatus('ok', 'Loading wheel system ' + sysId + '… (fallback mode)');
+    fetch(WHEELS_JSON_URL, {cache:'no-store'})
+      .then(function(r){
+        if (!r.ok){ throw new Error('HTTP ' + r.status + ' while loading wheels.json'); }
+        return r.json();
+      })
+      .then(function(j){
+        if (!j || !j.wheels || !j.wheels[sysId]){
+          throw new Error('system_id not found in wheels.json: ' + sysId);
+        }
+        applyWheel(sysId, j.wheels[sysId]);
+      })
+      .catch(function(err){
+        setStatus('err', 'Wheel load failed: ' + String(err && err.message ? err.message : err));
+        if (dom.lead) {
+          dom.lead.textContent = 'Could not load the wheel library. Verify wheels.json URL and server permissions.';
+        }
+      });
+  }
+
+  var workerSrc = [
+    "self.onmessage=function(e){",
+    "var url=e.data.url,id=e.data.id;",
+    "fetch(url,{cache:'no-store'}).then(function(r){",
+    "if(!r.ok){throw new Error('HTTP '+r.status+' while loading wheels.json');}",
+    "return r.text();",
+    "}).then(function(t){",
+    "var j=JSON.parse(t);",
+    "if(!j||!j.wheels||!j.wheels[id]){self.postMessage({ok:false,err:'system_id not found: '+id});return;}",
+    "self.postMessage({ok:true,wheel:j.wheels[id]});",
+    "}).catch(function(err){",
+    "self.postMessage({ok:false,err:String(err&&err.message?err.message:err)});",
+    "});",
+    "};"
+  ].join(" ");
+
+  try{
+    var blob = new Blob([workerSrc], {type:'application/javascript'});
+    var worker = new Worker(URL.createObjectURL(blob));
+    worker.onmessage = function(ev){
+      var msg = ev.data || {};
+      if (!msg.ok){
+        setStatus('err', 'Worker load failed: ' + (msg.err || 'Unknown error') + ' (trying fallback…)');
+        fallbackFetch();
+        return;
+      }
+      applyWheel(sysId, msg.wheel);
+    };
+    worker.onerror = function(){ fallbackFetch(); };
+    worker.postMessage({url: WHEELS_JSON_URL, id: sysId});
+  }catch(e){
+    fallbackFetch();
+  }
+}
+
+function init(){
+  systemId = qs('system_id');
+  renderMaxDropdown();
+  wireButtons();
+  applyBuilderSeo('Wheel Builder | LottoExpert', 'Use the LottoExpert wheel builder to generate combinations from a selected wheel system.');
+
+  if (!systemId){
+    setStatus('err', 'Missing system_id in the URL. Go back to the catalog and click "View System".');
+    if (dom.lead) { dom.lead.textContent = 'Missing system_id. Open a system from the catalog.'; }
+    return;
+  }
+
+  loadWheelFromJson(systemId);
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+})();
+[[/script]]
+
+[[/div]]
+{/source}
