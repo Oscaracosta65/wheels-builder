@@ -392,7 +392,7 @@ var dom = {
   req: document.getElementById('leReq'),
   selected: document.getElementById('leSelected'),
   grid: document.getElementById('leGrid'),
-  outBody: document.getElementById('leOutTable').getElementsByTagName('tbody')[0],
+  outBody: document.getElementById('leOutTable') && document.getElementById('leOutTable').getElementsByTagName('tbody')[0],
   printSystemId: document.getElementById('lePrintSystemId'),
   printPick: document.getElementById('lePrintPick'),
   printPool: document.getElementById('lePrintPool'),
@@ -444,6 +444,25 @@ function flashCopiedState(){
 function pad2(n){
   n = parseInt(n,10) || 0;
   return n < 10 ? ('0' + n) : String(n);
+}
+
+function buildCopyText(){
+  var sysText  = (dom.sys       ? dom.sys.textContent       : '') || '-';
+  var pickText = (dom.pick      ? dom.pick.textContent      : '') || '-';
+  var poolText = (dom.pool      ? dom.pool.textContent      : '') || '-';
+  var assText  = (dom.assurance ? dom.assurance.textContent : '') || '-';
+  var selText  = selected.length ? selected.join(' - ') : '-';
+  var sep = '------------------------------------------------------------';
+  var lines = [
+    'LottoExpert Wheel Output',
+    'System: ' + sysText + '  |  Pick: ' + pickText + '  |  Pool: ' + poolText + '  |  Assurance: ' + assText + '  |  Lines: ' + builtLines.length,
+    'Selected Numbers: ' + selText,
+    sep
+  ];
+  for (var i = 0; i < builtLines.length; i++){
+    lines.push((i + 1) + '.  ' + builtLines[i]);
+  }
+  return lines.join('\r\n');
 }
 
 function setMetaTag(name, content){
@@ -778,7 +797,7 @@ function downloadTxt(){
 
 function copyWheel(){
   if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before copying.'); return; }
-  var txt = builtLines.join('\r\n');
+  var txt = buildCopyText();
 
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(txt).then(function(){
@@ -814,21 +833,21 @@ function fallbackCopy(txt){
 
 function printWheel(){
   if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before printing.'); return; }
-  syncPrintHeader();
 
-  if (window.requestAnimationFrame){
-    window.requestAnimationFrame(function(){
-      window.requestAnimationFrame(function(){
-        setStatus('ok', 'Print dialog opened.');
-        window.print();
-      });
-    });
-  } else {
-    setTimeout(function(){
-      setStatus('ok', 'Print dialog opened.');
-      window.print();
-    }, 120);
+  var txt = buildCopyText();
+
+  var win = window.open('', '_blank');
+  if (!win){
+    setStatus('err', 'Print window was blocked. Please allow pop-ups for this site and try again.');
+    return;
   }
+  win.document.body.style.fontFamily = 'monospace';
+  win.document.body.style.fontSize = '12pt';
+  win.document.body.style.whiteSpace = 'pre-wrap';
+  win.document.body.textContent = txt;
+  win.focus();
+  setStatus('ok', 'Print dialog opened.');
+  win.print();
 }
 
 function wireButtons(){
