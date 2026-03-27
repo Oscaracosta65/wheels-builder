@@ -392,7 +392,7 @@ var dom = {
   req: document.getElementById('leReq'),
   selected: document.getElementById('leSelected'),
   grid: document.getElementById('leGrid'),
-  outBody: document.getElementById('leOutTable').getElementsByTagName('tbody')[0],
+  outBody: document.getElementById('leOutTable') && document.getElementById('leOutTable').getElementsByTagName('tbody')[0],
   printSystemId: document.getElementById('lePrintSystemId'),
   printPick: document.getElementById('lePrintPick'),
   printPool: document.getElementById('lePrintPool'),
@@ -444,14 +444,6 @@ function flashCopiedState(){
 function pad2(n){
   n = parseInt(n,10) || 0;
   return n < 10 ? ('0' + n) : String(n);
-}
-
-function escapeHtml(s){
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
 function buildCopyText(){
@@ -843,19 +835,19 @@ function printWheel(){
   if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before printing.'); return; }
 
   var txt = buildCopyText();
-  var safe = escapeHtml(txt);
 
   var win = window.open('', '_blank');
   if (!win){
     setStatus('err', 'Print window was blocked. Please allow pop-ups for this site and try again.');
     return;
   }
-  win.document.open();
-  win.document.write('<pre style="font-family:monospace;font-size:12pt;white-space:pre-wrap;">' + safe + '<\/pre>');
-  win.document.close();
+  win.document.body.style.fontFamily = 'monospace';
+  win.document.body.style.fontSize = '12pt';
+  win.document.body.style.whiteSpace = 'pre-wrap';
+  win.document.body.textContent = txt;
   win.focus();
-  win.print();
   setStatus('ok', 'Print dialog opened.');
+  win.print();
 }
 
 function wireButtons(){
