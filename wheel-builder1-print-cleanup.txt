@@ -446,6 +446,33 @@ function pad2(n){
   return n < 10 ? ('0' + n) : String(n);
 }
 
+function escapeHtml(s){
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildCopyText(){
+  var sysText  = (dom.sys       ? dom.sys.textContent       : '') || '-';
+  var pickText = (dom.pick      ? dom.pick.textContent      : '') || '-';
+  var poolText = (dom.pool      ? dom.pool.textContent      : '') || '-';
+  var assText  = (dom.assurance ? dom.assurance.textContent : '') || '-';
+  var selText  = selected.length ? selected.join(' - ') : '-';
+  var sep = '------------------------------------------------------------';
+  var lines = [
+    'LottoExpert Wheel Output',
+    'System: ' + sysText + '  |  Pick: ' + pickText + '  |  Pool: ' + poolText + '  |  Assurance: ' + assText + '  |  Lines: ' + builtLines.length,
+    'Selected Numbers: ' + selText,
+    sep
+  ];
+  for (var i = 0; i < builtLines.length; i++){
+    lines.push((i + 1) + '.  ' + builtLines[i]);
+  }
+  return lines.join('\r\n');
+}
+
 function setMetaTag(name, content){
   var el = document.querySelector('meta[name="' + name + '"]');
   if (!el){
@@ -778,7 +805,7 @@ function downloadTxt(){
 
 function copyWheel(){
   if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before copying.'); return; }
-  var txt = builtLines.join('\r\n');
+  var txt = buildCopyText();
 
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(txt).then(function(){
@@ -816,19 +843,72 @@ function printWheel(){
   if (!builtLines || !builtLines.length){ setStatus('err', 'Create the wheel before printing.'); return; }
   syncPrintHeader();
 
-  if (window.requestAnimationFrame){
-    window.requestAnimationFrame(function(){
-      window.requestAnimationFrame(function(){
-        setStatus('ok', 'Print dialog opened.');
-        window.print();
-      });
-    });
-  } else {
-    setTimeout(function(){
-      setStatus('ok', 'Print dialog opened.');
-      window.print();
-    }, 120);
+  var sysText  = (dom.sys       ? dom.sys.textContent       : '') || '-';
+  var pickText = (dom.pick      ? dom.pick.textContent      : '') || '-';
+  var poolText = (dom.pool      ? dom.pool.textContent      : '') || '-';
+  var assText  = (dom.assurance ? dom.assurance.textContent : '') || '-';
+  var selText  = selected.length ? selected.join(' - ') : '-';
+  var now      = new Date();
+  var dateStr  = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+  var rows = '';
+  for (var i = 0; i < builtLines.length; i++){
+    var rowCls = (i % 2 === 0) ? ' class="alt"' : '';
+    rows += '<tr' + rowCls + '><td>' + (i + 1) + '</td><td>' + escapeHtml(builtLines[i]) + '</td></tr>';
   }
+
+  var css = [
+    '*{box-sizing:border-box;margin:0;padding:0;}',
+    'body{font-family:Arial,Helvetica,sans-serif;color:#000;background:#fff;padding:20px;font-size:13px;}',
+    '.pw-hdr{border-bottom:2px solid #0A1A33;padding-bottom:12px;margin-bottom:16px;}',
+    '.pw-title{font-size:20px;font-weight:bold;color:#0A1A33;margin-bottom:8px;}',
+    '.pw-meta{font-size:13px;color:#222;margin-bottom:4px;}',
+    '.pw-meta b{font-weight:bold;}',
+    '.pw-sel{font-size:12px;color:#444;margin-top:6px;word-break:break-all;}',
+    '.pw-foot{font-size:11px;color:#666;margin-top:6px;}',
+    'table{width:100%;border-collapse:collapse;margin-top:4px;}',
+    'th{background:#0A1A33;color:#fff;padding:8px 10px;text-align:left;font-weight:bold;font-size:13px;}',
+    'td{padding:5px 10px;border-bottom:1px solid #ddd;color:#000;font-size:13px;}',
+    'tr.alt td{background:#f5f5f5;}',
+    '@media print{',
+    'body{padding:10px;}',
+    'th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}',
+    'tr.alt td{-webkit-print-color-adjust:exact;print-color-adjust:exact;}',
+    'table{page-break-inside:auto;}',
+    'tr{page-break-inside:avoid;page-break-after:auto;}',
+    '}'
+  ].join('');
+
+  var html = '<!DOCTYPE html>' +
+    '<html lang="en"><head><meta charset="utf-8">' +
+    '<title>LottoExpert \u2013 Wheel System ' + escapeHtml(sysText) + '</title>' +
+    '<style>' + css + '</style>' +
+    '</head><body>' +
+    '<div class="pw-hdr">' +
+    '<div class="pw-title">LottoExpert \u2013 Wheel System ' + escapeHtml(sysText) + '</div>' +
+    '<div class="pw-meta">' +
+      'Pick: <b>' + escapeHtml(pickText) + '</b> &nbsp;&nbsp; ' +
+      'Pool: <b>' + escapeHtml(poolText) + '</b> &nbsp;&nbsp; ' +
+      'Assurance: <b>' + escapeHtml(assText) + '</b> &nbsp;&nbsp; ' +
+      'Lines: <b>' + escapeHtml(String(builtLines.length)) + '</b>' +
+    '</div>' +
+    '<div class="pw-sel">Selected Numbers: ' + escapeHtml(selText) + '</div>' +
+    '<div class="pw-foot">Generated: ' + escapeHtml(dateStr) + ' &nbsp;&mdash;&nbsp; LottoExpert.net</div>' +
+    '</div>' +
+    '<table><thead><tr><th>#</th><th>Combination</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table>' +
+    '</body></html>';
+
+  var win = window.open('', '_blank');
+  if (!win){
+    setStatus('err', 'Print window was blocked. Please allow pop-ups for this site and try again.');
+    return;
+  }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  win.print();
+  setStatus('ok', 'Print dialog opened.');
 }
 
 function wireButtons(){
