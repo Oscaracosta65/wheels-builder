@@ -897,6 +897,7 @@ function printWheel(){
     '</div>' +
     '<table><thead><tr><th>#</th><th>Combination</th></tr></thead>' +
     '<tbody>' + rows + '</tbody></table>' +
+    '<script>window.onload=function(){window.print();};<\/script>' +
     '</body></html>';
 
   var win = window.open('', '_blank');
@@ -907,7 +908,6 @@ function printWheel(){
   win.document.write(html);
   win.document.close();
   win.focus();
-  win.print();
   setStatus('ok', 'Print dialog opened.');
 }
 
